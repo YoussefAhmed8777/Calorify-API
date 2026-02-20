@@ -3,3 +3,7 @@ node_modules/
 .env
 
 calorify-firebase-service-account.json
+
+test-firebase.js
+
+docs
