@@ -4,6 +4,8 @@ node_modules/
 
 calorify-firebase-service-account.json
 
-test-firebase.js
+tests
 
 docs
+
+uploads
