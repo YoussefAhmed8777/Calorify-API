@@ -116,7 +116,7 @@ foodSchema.virtual('nutritionPerServing').get(function() {
   };
 });
 
-foodSchema.index({ name: 'text', nameAr: 'text' });  // Text search
-foodSchema.index({ category: 1 });       // Compound index
+// foodSchema.index({ name: 'text', nameAr: 'text' });  // Text search
+// foodSchema.index({ category: 1 });       // Compound index
 
 module.exports = mongoose.model('Food', foodSchema);

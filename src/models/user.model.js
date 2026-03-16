@@ -1,31 +1,46 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
+  _id: {
+    type: String, 
+    required: true
+  },
   name:{
     type: String,
     required: [true, 'User name is required'],
-    trim: true
+    trim: true,
+    minlength:3,
+    maxlength:30
   },
   email:{
     type: String,
+    unique: true,
     required: [true, 'User email is required'],
     trim: true,
-    lowercase: true
+    lowercase: true, 
+    match:[/^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$/, 'Please enter a valid email']
   },
   height:{
     type: Number,
     required: [true, 'User height is required'],
-    trim: true
+    min:150,
+    max:220,
+    // unit:{
+    //   enum:['cm', 'ft'],
+    // }
   },
   weight:{
     type: Number,
     required: [true, 'User weight is required'],
-    trim: true
+    min:40,
+    max:150,
+    // unit:{
+    //   enum:['kg', 'lbs'],
+    // }
   },
-  dailyCaloriesGoal:{
+  dailyCalorieGoal:{
     type: Number,
     required: [true, 'User calories is required'],
-    trim: true,
     default: 2000,
     min: 500,
     max: 8000
@@ -38,8 +53,7 @@ const userSchema = new mongoose.Schema({
   },
   age:{
     type: Number,
-    required: [true, 'User age is required'],
-    trim: true
+    // required: [true, 'User age is required'],
   },
   activityLevel:{
     type: String,
@@ -64,9 +78,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     select: false  // Won't show in normal queries
   },
-},{timestamps:true});
+},{timestamps:true, _id:false});
 
-userSchema.index({ email: 1 });
-userSchema.index({ 'stats.currentStreak': -1 });
+// userSchema.index({ email: 1 });
+// userSchema.index({ 'stats.currentStreak': -1 });
 
 module.exports = mongoose.model('User', userSchema);
