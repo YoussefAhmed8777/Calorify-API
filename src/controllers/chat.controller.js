@@ -60,20 +60,21 @@ exports.sendMessage = async (req, res) => {
 // POST /calorify/chat/nutrition
 exports.askNutrition = async (req, res) => {
   try {
-    const userId = req.user.uid;
+    // const userId = req.user.uid;
     const { question } = req.body;
 
     // Get user profile for context
-    const user = await User.findById(userId).select('-refreshToken');
+    // const user = await User.findById(userId).select('-refreshToken');
     
-    const context = {
-      dailyGoal: user?.dailyCalorieGoal || 2000,
-      height: user?.height,
-      weight: user?.weight,
-      goal: user?.goal
-    };
+    // const context = {
+    //   dailyGoal: user?.dailyCalorieGoal || 2000,
+    //   height: user?.height,
+    //   weight: user?.weight,
+    //   goal: user?.goal
+    // };
 
-    const response = await geminiService.askNutrition(question, context);
+    const response = await geminiService.askNutrition(question);
+    // const response = await geminiService.askNutrition(question, context);
 
     res.status(200).json({
       success: true,
@@ -83,7 +84,7 @@ exports.askNutrition = async (req, res) => {
     });
 
   } catch (error) {
-    console.log('❌ Nutrition chat error:', error);
+    console.log('Nutrition chat error:', error);
     res.status(500).json({ error: 'Failed to get nutrition advice' });
   }
 };

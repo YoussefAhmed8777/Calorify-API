@@ -1,5 +1,6 @@
 const Meal = require('./../models/meal.model');
 const fatsecretService = require('./../services/fatsecret.services');
+const progressService = require('./../services/progress.services');
 // const { parseFoodDescription, formatFoodForClient } = require('./../utilities/foodhelpers');
 
 exports.getAllMeals = async(req,res)=>{
@@ -166,6 +167,14 @@ exports.createMeal = async (req, res) => {
       notes,
       source: 'manual'
     });
+
+      // 1. Update daily progress (streaks, calories)
+      await progressService.updateDailyProgress(userId, new Date());
+      
+      // 2. Increment user's total meal count
+      await User.findByIdAndUpdate(userId, {
+        $inc: { 'stats.mealsLogged': 1 }
+      });
 
     res.status(201).json({
       success: true,

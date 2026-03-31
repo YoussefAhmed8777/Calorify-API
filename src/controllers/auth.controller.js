@@ -75,6 +75,7 @@ exports.login = async (req, res) => {
   try {
     const { idToken } = req.body;  // From Firebase client SDK
 
+    console.log("Token received from frontend/postman:", idToken);
     // 1. Verify Firebase ID token
     const decodedToken = await auth.verifyIdToken(idToken);
     const { uid, email, name } = decodedToken;
@@ -157,7 +158,7 @@ exports.logout = async (req, res) => {
     // Remove refresh token from database
     await tokenService.removeRefreshToken(userId);
     
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: 'Logged out successfully'
     });
@@ -179,10 +180,10 @@ exports.getProfile = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: 'User data found',
-      user
+      userData: user
     });
 
   } catch (error) {
@@ -198,7 +199,11 @@ exports.updateProfile = async (req, res) => {
     const updates = {
       displayName: req.body.displayName,
       dailyCalorieGoal: req.body.dailyCalorieGoal,
-      preferences: req.body.preferences
+      email:req.body.email,
+      weight:req.body.weight,
+      height:req.body.height,
+      age:req.body.age,
+      goal:req.body.goal,
     };
 
     // Remove undefined fields
@@ -209,10 +214,10 @@ exports.updateProfile = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.user.uid,
       updates,
-      { new: true, runValidators: true }
+      { returnDocument:'after', runValidators: true }
     ).select('-refreshToken');
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: 'User data updated successfully',
       user

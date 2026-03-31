@@ -71,7 +71,9 @@ const userSchema = new mongoose.Schema({
     mealsLogged: { type: Number, default: 0 },
     currentStreak: { type: Number, default: 0 },
     longestStreak: { type: Number, default: 0 },
-    joinDate: { type: Date, default: Date.now }
+    joinDate: { type: Date, default: Date.now },
+    lastActive: { type: Date },
+    totalCalories: { type: Number, default: 0 } // Lifetime total
   },
   // Refresh token (encrypted)
   refreshToken: {
