@@ -135,7 +135,7 @@ const mealSchema = new mongoose.Schema({
   toObject:{virtuals:true}
 });
 
-// ========== VIRTUAL 1: Time ago (e.g., "2 hours ago") ==========
+// VIRTUAL 1: Time ago (e.g., "2 hours ago")
 mealSchema.virtual('timeAgo').get(function() {
   // 'this' refers to the current meal document
   const now = new Date();
@@ -152,14 +152,14 @@ mealSchema.virtual('timeAgo').get(function() {
   return `${diffDays} days ago`;
 });
 
-// ========== VIRTUAL 2: Day of week ==========
+// VIRTUAL 2: Day of week
 mealSchema.virtual('dayOfWeek').get(function() {
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 
                 'Thursday', 'Friday', 'Saturday'];
   return days[this.date.getDay()];
 });
 
-// ========== VIRTUAL 3: Meal summary (for display) ==========
+// VIRTUAL 3: Meal summary (for display)
 mealSchema.virtual('summary').get(function() {
   const foodCount = this.food.length;
   const mainFood = this.food[0]?.customName || 'meal';
@@ -168,7 +168,7 @@ mealSchema.virtual('summary').get(function() {
   return `${foodCount} items, ${this.total.calories} calories total`;
 });
 
-// ========== VIRTUAL 4: Is this today's meal? ==========
+// VIRTUAL 4: Is this today's meal?
 mealSchema.virtual('isToday').get(function() {
   const today = new Date();
   const mealDate = this.date;
@@ -176,7 +176,7 @@ mealSchema.virtual('isToday').get(function() {
   return mealDate.toDateString() === today.toDateString();
 });
 
-// ========== MIDDLEWARE ==========
+// MIDDLEWARE
 // Pre-save middleware (runs in order)
 mealSchema.pre('save', mealMiddleware.ensureName);        // 1. Ensure name exists
 mealSchema.pre('save', mealMiddleware.calculateTotals);   // 2. Calculate totals

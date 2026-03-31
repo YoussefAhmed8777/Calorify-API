@@ -18,8 +18,8 @@ exports.sendMessage = async (req, res) => {
       });
     }
 
-    console.log(`💬 Chat from user "${message}"`);
-    // console.log(`💬 Chat from user ${userId}: "${message}"`);
+    console.log(`Chat from user "${message}"`);
+    // console.log(`Chat from user ${userId}: "${message}"`);
 
     // Get user's chat history
     // let history = chatHistories.get(userId) || [];
@@ -51,7 +51,7 @@ exports.sendMessage = async (req, res) => {
     });
 
   } catch (error) {
-    console.log('❌ Chat error:', error);
+    console.log('Chat error:', error);
     res.status(500).json({ error: 'Chat failed' });
   }
 };
@@ -104,7 +104,7 @@ exports.extractMeal = async (req, res) => {
     });
 
   } catch (error) {
-    console.log('❌ Meal extraction error:', error);
+    console.log('Meal extraction error:', error);
     res.status(500).json({ error: 'Failed to extract meal' });
   }
 };
@@ -142,7 +142,7 @@ exports.saveMealFromChat = async (req, res) => {
     });
 
   } catch (error) {
-    console.log('❌ Save chat meal error:', error);
+    console.log('Save chat meal error:', error);
     res.status(500).json({ error: 'Failed to save meal' });
   }
 };
@@ -161,7 +161,7 @@ exports.getHistory = async (req, res) => {
     });
 
   } catch (error) {
-    console.log('❌ Get history error:', error);
+    console.log('Get history error:', error);
     res.status(500).json({ error: 'Failed to get history' });
   }
 };
@@ -179,7 +179,7 @@ exports.clearHistory = async (req, res) => {
     });
 
   } catch (error) {
-    console.log('❌ Clear history error:', error);
+    console.log('Clear history error:', error);
     res.status(500).json({ error: 'Failed to clear history' });
   }
 };

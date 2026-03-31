@@ -1,7 +1,4 @@
-// All middleware functions for Meal model
-// ===========================================
-
-// ========== PRE-SAVE MIDDLEWARE ==========
+// PRE-SAVE MIDDLEWARE
 // Runs AUTOMATICALLY before every .save()
 const calculateTotals = function(next) {
   // 'this' = the meal document being saved
@@ -38,7 +35,7 @@ const calculateTotals = function(next) {
   next();
 };
 
-// ========== PRE-VALIDATE MIDDLEWARE ==========
+// PRE-VALIDATE MIDDLEWARE
 // Runs before validation checks
 const ensureName = function(next) {
   // If no name provided, create one from meal type
@@ -51,7 +48,7 @@ const ensureName = function(next) {
   next();
 };
 
-// ========== POST-SAVE MIDDLEWARE ==========
+// POST-SAVE MIDDLEWARE
 // Runs AFTER document is saved
 const afterSave = function(doc, next) {
   console.log(`Meal saved successfully! ID: ${doc._id}`);
@@ -59,7 +56,7 @@ const afterSave = function(doc, next) {
   next();
 };
 
-// ========== PRE-FIND MIDDLEWARE ==========
+// PRE-FIND MIDDLEWARE
 // Runs before ANY find operation
 const filterRemoved = function(next) {
   // Automatically exclude removed meals unless specifically asked

@@ -17,7 +17,7 @@ class NotificationService {
       return { success: true, messageId: response };
 
     } catch (error) {
-      console.log('❌ Notification failed:', error);
+      console.log('Notification failed:', error);
       return { success: false, error: error.message };
     }
   }
@@ -40,7 +40,7 @@ class NotificationService {
       };
 
     } catch (error) {
-      console.log('❌ Multicast failed:', error);
+      console.log('Multicast failed:', error);
       return { success: false, error: error.message };
     }
   }
@@ -60,7 +60,7 @@ class NotificationService {
       return { success: true, messageId: response };
 
     } catch (error) {
-      console.log(`❌ Topic notification failed:`, error);
+      console.log(`Topic notification failed:`, error);
       return { success: false, error: error.message };
     }
   }

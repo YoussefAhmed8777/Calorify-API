@@ -11,7 +11,7 @@ class TokenService {
     this.refreshExpiry = '7d';      // Long-lived
   }
 
-  // ========== GENERATE TOKENS ==========
+  // GENERATE TOKENS
   generateTokens(user) {
     const payload = {
       uid: user._id, // who is this?
@@ -36,7 +36,7 @@ class TokenService {
     return { accessToken, refreshToken };
   }
 
-  // ========== VERIFY ACCESS TOKEN ==========
+  // VERIFY ACCESS TOKEN
   verifyAccessToken(token) {
     try {
       // This checks:
@@ -54,7 +54,7 @@ class TokenService {
     }
   };
 
-  // ========== VERIFY REFRESH TOKEN ==========
+  // VERIFY REFRESH TOKEN
   verifyRefreshToken(token) {
     try {
       const decoded = jwt.verify(token, this.refreshSecret);
@@ -65,7 +65,7 @@ class TokenService {
     }
   };
 
-  // ========== REFRESH ACCESS TOKEN ==========
+  // REFRESH ACCESS TOKEN
   async refreshAccessToken(refreshToken) {
     // 1. Verify refresh token is valid
     const payload = this.verifyRefreshToken(refreshToken);
@@ -80,7 +80,7 @@ class TokenService {
     return this.generateTokens(user);
   };
 
-  // ========== HASH REFRESH TOKEN FOR STORAGE ==========
+  // HASH REFRESH TOKEN FOR STORAGE
   hashToken(token) { // one way ecnryption
     return crypto
       .createHash('sha256')
@@ -88,7 +88,7 @@ class TokenService {
       .digest('hex');
   };
 
-  // ========== STORE REFRESH TOKEN ==========
+  // STORE REFRESH TOKEN
   async storeRefreshToken(userId, token) {
     const hashedToken = this.hashToken(token);
     await User.findByIdAndUpdate(userId, {
@@ -96,7 +96,7 @@ class TokenService {
     });
   };
 
-  // ========== VALIDATE REFRESH TOKEN ==========
+  // VALIDATE REFRESH TOKEN
   async validateRefreshToken(userId, token) {
     const user = await User.findById(userId).select('+refreshToken');
     
@@ -109,7 +109,7 @@ class TokenService {
     return hashedToken === user.refreshToken;
   };
 
-  // ========== REMOVE REFRESH TOKEN (LOGOUT) ==========
+  // REMOVE REFRESH TOKEN (LOGOUT)
   async removeRefreshToken(userId) {
     await User.findByIdAndUpdate(userId, {
       $unset: { refreshToken: 1 } // removes the field

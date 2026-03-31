@@ -37,11 +37,11 @@ class FatSecretService {
       this.accessToken = response.data.access_token;
       this.tokenExpiry = Date.now() + (response.data.expires_in * 1000);
       
-      console.log('✅ FatSecret token obtained');
+      console.log('FatSecret token obtained');
       return this.accessToken;
 
     } catch (error) {
-      console.error('❌ FatSecret auth failed:', error.response?.data || error.message);
+      console.error('FatSecret auth failed:', error.response?.data || error.message);
       throw new Error('FatSecret authentication failed');
     }
   }
@@ -96,7 +96,7 @@ class FatSecretService {
         this.accessToken = null;
         return this._makeDetailRequest(params);
       }
-      console.error('❌ Detail request failed:', error.response?.data || error.message);
+      console.error('Detail request failed:', error.response?.data || error.message);
       throw error;
     }
   }
@@ -104,7 +104,7 @@ class FatSecretService {
   // 4. SEARCH FOODS - FIXED
   async searchFoods(query, maxResults = 10) {
     try {
-      console.log(`🔍 Searching FatSecret for: "${query}"`);
+      console.log(`Searching FatSecret for: "${query}"`);
       
       const data = await this._makeSearchRequest({
         search_expression: query,
@@ -112,11 +112,11 @@ class FatSecretService {
       });
 
       // Debug log to see what FatSecret returns
-      // console.log('📦 FatSecret response structure:', Object.keys(data || {}));
-      console.log('📦 FatSecret response structure:', data);
+      // console.log('FatSecret response structure:', Object.keys(data || {}));
+      console.log('FatSecret response structure:', data);
 
       if (!data?.foods?.food) {
-        console.log('⚠️ No foods found in response');
+        console.log('No foods found in response');
         return [];
       }
 
@@ -133,7 +133,7 @@ class FatSecretService {
       }));
 
     } catch (error) {
-      console.error('❌ Search failed:', error.message);
+      console.error('Search failed:', error.message);
       return []; // Return empty array on error
     }
   }
@@ -141,7 +141,7 @@ class FatSecretService {
   // 5. GET FOOD DETAILS - FIXED
   async getFoodDetails(foodId) {
     try {
-      console.log(`📦 Getting details for food ID: ${foodId}`);
+      console.log(`Getting details for food ID: ${foodId}`);
       
       const data = await this._makeDetailRequest({
         food_id: foodId
@@ -171,7 +171,7 @@ class FatSecretService {
       };
 
     } catch (error) {
-      console.error('❌ Failed to get food details:', error.message);
+      console.error('Failed to get food details:', error.message);
       return null;
     }
   }

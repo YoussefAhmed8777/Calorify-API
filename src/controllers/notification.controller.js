@@ -28,7 +28,7 @@ exports.registerToken = async (req, res) => {
     });
 
   } catch (error) {
-    console.log('❌ Token registration error:', error);
+    console.log('Token registration error:', error);
     res.status(500).json({ error: 'Failed to register device' });
   }
 };
@@ -52,7 +52,7 @@ exports.unregisterToken = async (req, res) => {
     });
 
   } catch (error) {
-    console.log('❌ Token removal error:', error);
+    console.log('Token removal error:', error);
     res.status(500).json({ error: 'Failed to unregister device' });
   }
 };
@@ -88,7 +88,7 @@ exports.sendTestNotification = async (req, res) => {
     });
 
   } catch (error) {
-    console.log('❌ Test notification error:', error);
+    console.log('Test notification error:', error);
     res.status(500).json({ error: 'Failed to send test notification' });
   }
 };
@@ -133,7 +133,7 @@ exports.sendMealReminders = async () => {
       const tokens = user.deviceTokens.map(dt => dt.token);
       
       await notificationService.sendToMultipleDevices(tokens, {
-        title: 'Time to log your meal! 🍽️',
+        title: 'Time to log your meal!',
         body: 'You haven\'t logged any meals today. What did you eat?',
         data: {
           type: 'reminder',
@@ -142,10 +142,10 @@ exports.sendMealReminders = async () => {
       });
     }
 
-    console.log(`✅ Sent reminders to ${users.length} users`);
+    console.log(`Sent reminders to ${users.length} users`);
 
   } catch (error) {
-    console.log('❌ Meal reminder error:', error);
+    console.log('Meal reminder error:', error);
   }
 };
 
@@ -185,6 +185,6 @@ exports.sendGoalAchieved = async (userId, goalType) => {
     });
 
   } catch (error) {
-    console.log('❌ Goal achievement notification error:', error);
+    console.log('Goal achievement notification error:', error);
   }
 };

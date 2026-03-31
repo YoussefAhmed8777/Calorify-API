@@ -16,7 +16,7 @@ class GeminiService {
   // SIMPLE CHAT
   async chat(message, history = []) {
     try {
-      console.log(`🤖 Sending to Gemini: "${message.substring(0, 50)}..."`);
+      console.log(`Sending to Gemini: "${message.substring(0, 50)}..."`);
 
       // Build conversation with history
       const contents = [];
@@ -48,8 +48,8 @@ class GeminiService {
       };
 
     } catch (error) {
-      console.log('❌ Gemini API error:', error);
-      console.log('❌ Gemini API error:', error.message);
+      console.log('Gemini API error:', error);
+      console.log('Gemini API error:', error.message);
       return {
         success: false,
         error: 'Failed to get AI response',
@@ -68,8 +68,8 @@ class GeminiService {
       
       return response.text;
     } catch (error) {
-      console.log('❌ Gemini ask error:', error);
-      console.log('❌ Gemini ask error:', error.message);
+      console.log('Gemini ask error:', error);
+      console.log('Gemini ask error:', error.message);
       return 'Sorry, I could not process your request.';
     }
   }
@@ -78,15 +78,15 @@ class GeminiService {
   async askNutrition(question, userContext = {}) {
     // Create a prompt that guides Gemini to be a nutritionist
     const systemPrompt = `You are a helpful nutrition assistant for a calorie tracking app. 
-Your job is to:
-1. Estimate calories in foods when asked
-2. Provide nutrition advice
-3. Be accurate and helpful
-4. If unsure, say "I'm not sure, please consult a nutritionist"
+    Your job is to:
+    1. Estimate calories in foods when asked
+    2. Provide nutrition advice
+    3. Be accurate and helpful
+    4. If unsure, say "I'm not sure, please consult a nutritionist"
 
-User info: ${JSON.stringify(userContext)}
+    User info: ${JSON.stringify(userContext)}
 
-Keep responses concise and friendly.`;
+    Keep responses concise and friendly.`;
 
     try {
       const response = await this.ai.models.generateContent({
@@ -99,8 +99,8 @@ Keep responses concise and friendly.`;
       
       return response.text;
     } catch (error) {
-      console.log('❌ Nutrition chat error:', error);
-      console.log('❌ Nutrition chat error:', error.message);
+      console.log('Nutrition chat error:', error);
+      console.log('Nutrition chat error:', error.message);
       return 'I encountered an error. Please try again.';
     }
   }
@@ -109,17 +109,17 @@ Keep responses concise and friendly.`;
   // This is for the "I ate pizza" feature
   async extractMealFromText(userMessage) {
     const prompt = `Extract meal information from this user message.
-Return ONLY a JSON object with this structure:
-{
-  "foods": [
-    { "name": "food name", "quantity": number, "unit": "serving/cup/piece/etc" }
-  ],
-  "mealType": "breakfast|lunch|dinner|snack",
-  "estimatedCalories": total,
-  "confidence": "high|medium|low"
-}
+    Return ONLY a JSON object with this structure:
+    {
+      "foods": [
+        { "name": "food name", "quantity": number, "unit": "serving/cup/piece/etc" }
+      ],
+      "mealType": "breakfast|lunch|dinner|snack",
+      "estimatedCalories": total,
+      "confidence": "high|medium|low"
+    }
 
-User message: "${userMessage}"`;
+    User message: "${userMessage}"`;
 
     try {
       const response = await this.ai.models.generateContent({
@@ -137,8 +137,8 @@ User message: "${userMessage}"`;
       }
       
     } catch (error) {
-      console.log('❌ Meal extraction error:', error);
-      console.log('❌ Meal extraction error:', error.message);
+      console.log('Meal extraction error:', error);
+      console.log('Meal extraction error:', error.message);
       return null;
     }
   }
