@@ -52,7 +52,7 @@ class GeminiService {
       console.log('Gemini API error:', error.message);
       return {
         success: false,
-        error: 'Failed to get AI response',
+        error: error.message || 'Failed to get AI response',
         fallback: 'Please try again later'
       };
     }
@@ -70,7 +70,7 @@ class GeminiService {
     } catch (error) {
       console.log('Gemini ask error:', error);
       console.log('Gemini ask error:', error.message);
-      return 'Sorry, I could not process your request.';
+      return `Sorry, I could not process your request: ${error.message}`;
     }
   }
 
@@ -91,17 +91,17 @@ class GeminiService {
     try {
       const response = await this.ai.models.generateContent({
         model: this.model,
-        contents: [
-          { role: "user", parts: [{ text: systemPrompt }] },
-          { role: "user", parts: [{ text: question }] }
-        ],
+        contents: [{ 
+            role: "user", 
+            parts: [{ text: `${systemPrompt}\n\nUser Question: ${question}` }] 
+          }],
       });
       
       return response.text;
     } catch (error) {
       console.log('Nutrition chat error:', error);
       console.log('Nutrition chat error:', error.message);
-      return 'I encountered an error. Please try again.';
+      return `I encountered an error: ${error.message}`;
     }
   }
 
@@ -139,7 +139,7 @@ class GeminiService {
     } catch (error) {
       console.log('Meal extraction error:', error);
       console.log('Meal extraction error:', error.message);
-      return null;
+      return { error: error.message };
     }
   }
 }

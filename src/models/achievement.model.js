@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const achievementSchema = new mongoose.Schema({
-  userId: {
+  userID: {
     type: String,
     required: true,
     index: true
@@ -45,6 +45,6 @@ const achievementSchema = new mongoose.Schema({
 });
 
 // User can only have each badge once
-achievementSchema.index({ userId: 1, badgeId: 1 }, { unique: true });
+achievementSchema.index({ userID: 1, badgeId: 1 }, { unique: true });
 
 module.exports = mongoose.model('Achievement', achievementSchema);

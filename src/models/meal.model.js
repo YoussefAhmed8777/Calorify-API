@@ -3,7 +3,7 @@ const mealMiddleware = require('./../middlewares/meal.middleware');
 
 const mealSchema = new mongoose.Schema({
   userID:{
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'User',
     required: [true, 'User Id is required'], //Error Msg if missing
     index: true
@@ -25,10 +25,13 @@ const mealSchema = new mongoose.Schema({
     trim: true,
     enum:['breakfast', 'lunch', 'dinner', 'snacks', 'pre-workout', 'post-workout']
   },
-  food:[{
+  foods:[{
     foodID:{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Food'
+    },
+    customName: {
+      type: String
     },
     quantity:{
       value: {
@@ -161,8 +164,8 @@ mealSchema.virtual('dayOfWeek').get(function() {
 
 // VIRTUAL 3: Meal summary (for display)
 mealSchema.virtual('summary').get(function() {
-  const foodCount = this.food.length;
-  const mainFood = this.food[0]?.customName || 'meal';
+  const foodCount = this.foods ? this.foods.length : 0;
+  const mainFood = (this.foods && this.foods[0]) ? this.foods[0].customName : 'meal';
   
   if (foodCount === 1) return `${mainFood} (${this.total.calories} cal)`;
   return `${foodCount} items, ${this.total.calories} calories total`;
@@ -177,9 +180,9 @@ mealSchema.virtual('isToday').get(function() {
 });
 
 // MIDDLEWARE
-// Pre-save middleware (runs in order)
-mealSchema.pre('save', mealMiddleware.ensureName);        // 1. Ensure name exists
-mealSchema.pre('save', mealMiddleware.calculateTotals);   // 2. Calculate totals
+// Pre-validate middleware (runs in order before validation)
+mealSchema.pre('validate', mealMiddleware.ensureName);        // 1. Ensure name exists
+mealSchema.pre('validate', mealMiddleware.calculateTotals);   // 2. Calculate totals
 
 // Post-save middleware
 mealSchema.post('save', mealMiddleware.afterSave);        // After saving

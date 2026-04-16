@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const progressSchema = new mongoose.Schema({
-  userId: {
+  userID: {
     type: String,
     required: true,
     index: true
@@ -46,6 +46,6 @@ const progressSchema = new mongoose.Schema({
 });
 
 // Compound index for fast queries
-progressSchema.index({ userId: 1, date: -1 });
+progressSchema.index({ userID: 1, date: -1 });
 
 module.exports = mongoose.model('Progress', progressSchema);

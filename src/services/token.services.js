@@ -89,16 +89,16 @@ class TokenService {
   };
 
   // STORE REFRESH TOKEN
-  async storeRefreshToken(userId, token) {
+  async storeRefreshToken(userID, token) {
     const hashedToken = this.hashToken(token);
-    await User.findByIdAndUpdate(userId, {
+    await User.findByIdAndUpdate(userID, {
       refreshToken: hashedToken
     });
   };
 
   // VALIDATE REFRESH TOKEN
-  async validateRefreshToken(userId, token) {
-    const user = await User.findById(userId).select('+refreshToken');
+  async validateRefreshToken(userID, token) {
+    const user = await User.findById(userID).select('+refreshToken');
     
     if (!user || !user.refreshToken) {
       return false;
@@ -110,8 +110,8 @@ class TokenService {
   };
 
   // REMOVE REFRESH TOKEN (LOGOUT)
-  async removeRefreshToken(userId) {
-    await User.findByIdAndUpdate(userId, {
+  async removeRefreshToken(userID) {
+    await User.findByIdAndUpdate(userID, {
       $unset: { refreshToken: 1 } // removes the field
     });
   };

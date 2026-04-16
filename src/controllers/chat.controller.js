@@ -1,5 +1,6 @@
 const geminiService = require('./../services/gemini.services');
 const Meal = require('./../models/meal.model');
+const User = require('./../models/user.model');
 
 // Store chat history in memory (for demo)
 // In production, use MongoDB
@@ -9,7 +10,7 @@ const chatHistories = new Map();
 // POST /calorify/chat/message
 exports.sendMessage = async (req, res) => {
   try {
-    // const userId = req.user.uid;
+    // const userID = req.user.uid;
     const { message } = req.body;
 
     if (!message || message.trim().length < 2) {
@@ -19,10 +20,10 @@ exports.sendMessage = async (req, res) => {
     }
 
     console.log(`Chat from user "${message}"`);
-    // console.log(`Chat from user ${userId}: "${message}"`);
+    // console.log(`Chat from user ${userID}: "${message}"`);
 
     // Get user's chat history
-    // let history = chatHistories.get(userId) || [];
+    // let history = chatHistories.get(userID) || [];
 
     // Get response from Gemini
     const result = await geminiService.chat(message);
@@ -41,7 +42,7 @@ exports.sendMessage = async (req, res) => {
     // if (history.length > 20) {
     //   history = history.slice(-20);
     // }
-    // chatHistories.set(userId, history);
+    // chatHistories.set(userID, history);
 
     res.status(200).json({
       success: true,
@@ -60,21 +61,25 @@ exports.sendMessage = async (req, res) => {
 // POST /calorify/chat/nutrition
 exports.askNutrition = async (req, res) => {
   try {
-    // const userId = req.user.uid;
+    const userID = req.user.uid;
     const { question } = req.body;
 
     // Get user profile for context
-    // const user = await User.findById(userId).select('-refreshToken');
+    const user = await User.findById(userID).select('-refreshToken');
     
-    // const context = {
-    //   dailyGoal: user?.dailyCalorieGoal || 2000,
-    //   height: user?.height,
-    //   weight: user?.weight,
-    //   goal: user?.goal
-    // };
+    const context = {
+      dailyGoal: user?.dailyCalorieGoal || 2000,
+      height: user?.height,
+      weight: user?.weight,
+      goal: user?.goal
+    };
 
-    const response = await geminiService.askNutrition(question);
-    // const response = await geminiService.askNutrition(question, context);
+    if (!question || question.trim().length < 2) {
+      return res.status(400).json({ error: 'Question must be at least 2 characters' });
+    }
+
+    // const response = await geminiService.askNutrition(question);
+    const response = await geminiService.askNutrition(question, context);
 
     res.status(200).json({
       success: true,
@@ -95,6 +100,10 @@ exports.extractMeal = async (req, res) => {
   try {
     const { message } = req.body;
 
+    if (!message || message.trim().length < 2) {
+      return res.status(400).json({ error: 'Message must be at least 2 characters' });
+    }
+
     const mealData = await geminiService.extractMealFromText(message);
 
     res.status(200).json({
@@ -113,12 +122,12 @@ exports.extractMeal = async (req, res) => {
 // POST /calorify/chat/save-meal
 exports.saveMealFromChat = async (req, res) => {
   try {
-    const userId = req.user.uid;
+    const userID = req.user.uid;
     const { mealData } = req.body;
 
     // Create meal from extracted data
     const meal = await Meal.create({
-      userId,
+      userID,
       name: `Chat: ${mealData.foods?.map(f => f.name).join(', ') || 'Meal'}`,
       mealType: mealData.mealType || 'snack',
       foods: mealData.foods?.map(f => ({
@@ -151,8 +160,8 @@ exports.saveMealFromChat = async (req, res) => {
 // GET /calorify/chat/history
 exports.getHistory = async (req, res) => {
   try {
-    const userId = req.user.uid;
-    const history = chatHistories.get(userId) || [];
+    const userID = req.user.uid;
+    const history = chatHistories.get(userID) || [];
     
     res.status(200).json({
       success: true,
@@ -170,8 +179,8 @@ exports.getHistory = async (req, res) => {
 // DELETE /calorify/chat/history
 exports.clearHistory = async (req, res) => {
   try {
-    const userId = req.user.uid;
-    chatHistories.delete(userId);
+    const userID = req.user.uid;
+    chatHistories.delete(userID);
     
     res.status(200).json({
       success: true,

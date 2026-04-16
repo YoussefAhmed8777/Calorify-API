@@ -5,11 +5,11 @@ const User = require('./../models/user.model');
 // POST /calorify/notifications/register
 exports.registerToken = async (req, res) => {
   try {
-    const userId = req.user.uid;
+    const userID = req.user.uid;
     const { deviceToken, platform } = req.body;
 
     // Store token in user document
-    await User.findByIdAndUpdate(userId, {
+    await User.findByIdAndUpdate(userID, {
       $push: {
         deviceTokens: {
           token: deviceToken,
@@ -37,10 +37,10 @@ exports.registerToken = async (req, res) => {
 // POST /calorify/notifications/unregister
 exports.unregisterToken = async (req, res) => {
   try {
-    const userId = req.user.uid;
+    const userID = req.user.uid;
     const { deviceToken } = req.body;
 
-    await User.findByIdAndUpdate(userId, {
+    await User.findByIdAndUpdate(userID, {
       $pull: {
         deviceTokens: { token: deviceToken }
       }
@@ -61,8 +61,8 @@ exports.unregisterToken = async (req, res) => {
 // POST /calorify/notifications/test
 exports.sendTestNotification = async (req, res) => {
   try {
-    const userId = req.user.uid;
-    const user = await User.findById(userId);
+    const userID = req.user.uid;
+    const user = await User.findById(userID);
 
     if (!user.deviceTokens || user.deviceTokens.length === 0) {
       return res.status(400).json({ 
@@ -105,13 +105,13 @@ exports.sendMealReminders = async () => {
       {
         $lookup: {
           from: 'meals',
-          let: { userId: '$_id' },
+          let: { userID: '$_id' },
           pipeline: [
             {
               $match: {
                 $expr: {
                   $and: [
-                    { $eq: ['$userId', '$$userId'] },
+                    { $eq: ['$userID', '$$userID'] },
                     { $gte: ['$date', today] }
                   ]
                 }
@@ -150,9 +150,9 @@ exports.sendMealReminders = async () => {
 };
 
 // SEND GOAL ACHIEVEMENT
-exports.sendGoalAchieved = async (userId, goalType) => {
+exports.sendGoalAchieved = async (userID, goalType) => {
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userID);
     
     if (!user.deviceTokens || user.deviceTokens.length === 0) {
       return;

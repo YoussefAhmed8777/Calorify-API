@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const progressController = require('./../controllers/progress.controller');
 const { authMiddleware } = require('./../middlewares/auth.middleware');
+const validate = require('./../middlewares/validate.middleware');
 
 // Daily/Weekly progress
 router.get('/today', authMiddleware, progressController.getTodayProgress);
@@ -12,11 +13,11 @@ router.get('/monthly', authMiddleware, progressController.getMonthlySummary);
 router.get('/streak', authMiddleware, progressController.getStreak);
 
 // Weight tracking
-router.post('/weight', authMiddleware, progressController.logWeight);
-router.get('/weight-history', progressController.getWeightHistory);
+router.post('/weight', authMiddleware, validate('logWeight'), progressController.logWeight);
+router.get('/weight-history', authMiddleware, progressController.getWeightHistory);
 
 // Achievements
-router.get('/achievements', progressController.getAchievements);
-router.post('/check-achievements', progressController.checkAchievements);
+router.get('/achievements', authMiddleware, progressController.getAchievements);
+router.post('/check-achievements', authMiddleware, progressController.checkAchievements);
 
 module.exports = router;

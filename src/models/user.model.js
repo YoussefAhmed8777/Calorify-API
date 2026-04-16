@@ -75,6 +75,12 @@ const userSchema = new mongoose.Schema({
     lastActive: { type: Date },
     totalCalories: { type: Number, default: 0 } // Lifetime total
   },
+  // Device tokens for push notifications
+  deviceTokens: [{
+    token: String,
+    platform: String,
+    registeredAt: { type: Date, default: Date.now }
+  }],
   // Refresh token (encrypted)
   refreshToken: {
     type: String,

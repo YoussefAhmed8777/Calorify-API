@@ -16,18 +16,25 @@
   },
   "dependencies": {
     "@google/genai": "^1.45.0",
+    "@grpc/grpc-js": "^1.14.3",
     "axios": "1.13.6",
     "bcrypt": "^6.0.0",
+    "clarifai-nodejs-grpc": "^11.11.0",
+    "compression": "^1.8.1",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^8.2.1",
     "firebase-admin": "^13.6.1",
     "helmet": "^8.1.0",
+    "joi": "^18.1.2",
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.1.0",
     "mongoose": "^9.2.1",
     "multer": "^2.0.2",
-    "winston": "^3.19.0"
+    "sharp": "^0.34.5",
+    "winston": "^3.19.0",
+    "xss": "^1.0.15"
   }
 }

@@ -1,6 +1,6 @@
 // PRE-SAVE MIDDLEWARE
 // Runs AUTOMATICALLY before every .save()
-const calculateTotals = function(next) {
+const calculateTotals = function() {
   // 'this' = the meal document being saved
   console.log('Calculating totals for meal:', this.name);
   
@@ -10,16 +10,18 @@ const calculateTotals = function(next) {
   let totalFat = 0;
   
   // Loop through each food in the meal
-  this.food.forEach((item, index) => {
-    if (item.nutrition) {
-      totalCalories += item.nutrition.calories || 0;
-      totalProtein += item.nutrition.protein || 0;
-      totalCarbs += item.nutrition.carbs || 0;
-      totalFat += item.nutrition.fat || 0;
-      
-      console.log(`  Food ${index + 1}: +${item.nutrition.calories} cal`);
-    }
-  });
+  if (this.foods && Array.isArray(this.foods)) {
+    this.foods.forEach((item, index) => {
+      if (item.nutrition) {
+        totalCalories += item.nutrition.calories || 0;
+        totalProtein += item.nutrition.protein || 0;
+        totalCarbs += item.nutrition.carbs || 0;
+        totalFat += item.nutrition.fat || 0;
+        
+        console.log(`  Food ${index + 1}: +${item.nutrition.calories} cal`);
+      }
+    });
+  }
   
   // Set the totals
   this.total = {
@@ -30,14 +32,11 @@ const calculateTotals = function(next) {
   };
   
   console.log(`Total: ${this.total.calories} calories`);
-  
-  // MUST call next() to continue saving
-  next();
 };
 
 // PRE-VALIDATE MIDDLEWARE
 // Runs before validation checks
-const ensureName = function(next) {
+const ensureName = function() {
   // If no name provided, create one from meal type
   if (!this.name && this.mealType) {
     const date = new Date(this.date);
@@ -45,25 +44,22 @@ const ensureName = function(next) {
     this.name = `${this.mealType} at ${timeStr}`;
     console.log('Generated meal name:', this.name);
   }
-  next();
 };
 
 // POST-SAVE MIDDLEWARE
 // Runs AFTER document is saved
-const afterSave = function(doc, next) {
+const afterSave = function(doc) {
   console.log(`Meal saved successfully! ID: ${doc._id}`);
   // Could trigger notifications, update user stats, etc.
-  next();
 };
 
 // PRE-FIND MIDDLEWARE
 // Runs before ANY find operation
-const filterRemoved = function(next) {
+const filterRemoved = function() {
   // Automatically exclude removed meals unless specifically asked
   if (!this.getQuery().includeRemoved) {
     this.where({ isRemoved: { $ne: true } });
   }
-  next();
 };
 
 // Export all middleware functions
