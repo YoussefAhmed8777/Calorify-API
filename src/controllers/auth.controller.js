@@ -186,7 +186,7 @@ exports.loginWithEmail = async (req, res) => {
         height: 170,
         weight: 70,
         dailyCalorieGoal: 2000,
-        gender: "",
+        gender: "Male",
         activityLevel: "Normal Activity",
         goal: "Maintain Weight",
       });
@@ -200,7 +200,7 @@ exports.loginWithEmail = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "User Login Successfull",
+      message: "User Login Successful",
       accessToken,
       refreshToken,
       expiresIn: 900,

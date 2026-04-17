@@ -175,9 +175,15 @@ exports.sendGoalAchieved = async (userID, goalType) => {
       }
     };
 
+    const notification = messages[goalType];
+    if (!notification) {
+      console.log(`Unknown goal type: ${goalType}`);
+      return;
+    }
+
     await notificationService.sendToMultipleDevices(tokens, {
-      title: messages[goalType].title,
-      body: messages[goalType].body,
+      title: notification.title,
+      body: notification.body,
       data: {
         type: 'achievement',
         goalType

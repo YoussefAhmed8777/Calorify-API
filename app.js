@@ -15,7 +15,6 @@ const {
   generalLimiter,
   authLimiter,
   scanLimiter,
-  premiumScanLimiter,
   chatLimiter
 } = require('./src/middlewares/rateLimiter.middleware');
 const cors = require('cors');
@@ -30,14 +29,14 @@ if (process.env.NODE_ENV === 'production') {
   app.use(helmetConfig);
 } else {
   app.use(devHelmet);
-};
+}
 
 // Apply CORS before routes
 app.use(cors(corsOptions));
 
 console.log(`Hello From Server Port: ${process.env.SERVER_PORT}`);
 
-// Databse Connection
+// Database Connection
 connectDB();
 
 //Middleware

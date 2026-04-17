@@ -195,7 +195,7 @@ class ProgressService {
       });
 
       summary.averageCalories = Math.round(
-        summary.totalCalories / progress.length || 0,
+        summary.totalCalories / (progress.length || 1),
       );
 
       // Get current streak from user

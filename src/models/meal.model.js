@@ -64,8 +64,7 @@ const mealSchema = new mongoose.Schema({
     },
     userNotes:{
       type: String,
-      maxlength: 50,
-      optional: true
+      maxlength: 50
     }
   }],
   source:{
@@ -84,6 +83,9 @@ const mealSchema = new mongoose.Schema({
     },
     originalDetection:{ //what Ai thought it saw
       type: [String]
+    },
+    selectedFood:{ //which food the user confirmed
+      type: String
     },
     userCorrected:{ //did the user fix any mistakes?
       type: Boolean

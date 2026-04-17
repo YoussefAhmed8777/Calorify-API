@@ -108,7 +108,7 @@ exports.extractMeal = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Gemini extrated meal successfully',
+      message: 'Gemini extracted meal successfully',
       data: mealData
     });
 

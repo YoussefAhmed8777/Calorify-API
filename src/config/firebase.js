@@ -1,5 +1,18 @@
 const admin = require('firebase-admin');
-const serviceAcc = require('../../calorify-firebase-service-account.json');
+
+let serviceAcc;
+
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  // Parse from environment variable in production
+  serviceAcc = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+} else {
+  // Fallback to local file in development
+  try {
+    serviceAcc = require('../../calorify-firebase-service-account.json');
+  } catch (error) {
+    console.warn("Firebase service account file not found. Ensure FIREBASE_SERVICE_ACCOUNT is set in production.");
+  }
+}
 
 // This line does the actual authentication with Google's servers:
 // The connection is established once and reused for all future calls

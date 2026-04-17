@@ -109,9 +109,9 @@ foodSchema.virtual('nutritionPerServing').get(function() {
   // Apply multiplier to ALL nutrients
   return {
     calories: Math.round(this.nutrition.calories * multiplier),
-    protein: (this.nutrition.protein * multiplier).toFixed(1),
-    carbs: (this.nutrition.carbs * multiplier).toFixed(1),
-    fat: (this.nutrition.fat * multiplier).toFixed(1),
+    protein: Math.round(this.nutrition.protein * multiplier * 10) / 10,
+    carbs: Math.round(this.nutrition.carbs * multiplier * 10) / 10,
+    fat: Math.round(this.nutrition.fat * multiplier * 10) / 10,
     servingDescription: defaultServing.description
   };
 });

@@ -1,4 +1,3 @@
-const Food  = require('./../models/food.model.js');
 const fatsecretService = require('./../services/fatsecret.services');
 const { parseFoodDescription, formatFoodForClient } = require('./../utilities/foodhelpers');
 
@@ -19,7 +18,7 @@ exports.getFoodDetails = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Food found sucessfully',
+      message: 'Food found successfully',
       data: formatFoodForClient(food)
     });
 

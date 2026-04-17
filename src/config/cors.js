@@ -11,7 +11,7 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
       'http://localhost:3000', // Local development
       'http://localhost:8080',
       'http://localhost:19006', // Expo default
-      'http://192.168.1.*:*', // Local network
+      /^http:\/\/192\.168\.1\.\d+:\d+$/, // Local network
       /\.ngrok\.io$/ // Allow ngrok tunnels for testing
     ];
 

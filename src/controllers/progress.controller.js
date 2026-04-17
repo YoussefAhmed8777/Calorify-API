@@ -317,7 +317,7 @@ exports.getAchievements = async (req, res) => {
       summary: {
         earned: earned.length,
         total: available.length,
-        percentage: Math.round((earned.length / available.length) * 100)
+        percentage: available.length > 0 ? Math.round((earned.length / available.length) * 100) : 0
       }
     });
 
